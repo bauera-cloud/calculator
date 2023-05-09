@@ -1,0 +1,23 @@
+.calcBody {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: lightgray;
+    width: 100px;
+}
+
+.display {
+    background-color: white;
+    width: 20px;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
