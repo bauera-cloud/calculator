@@ -1,23 +1,42 @@
+body {
+    display: flex;
+    height: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+
 .calcBody {
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 12px;
     background-color: lightgray;
-    width: 100px;
+    height: 180px;
+    width: 150px;
+    align-items: center;
 }
 
+/* not working */
 .display {
     background-color: white;
-    width: 20px;
+    height: 20px;
+    width: 80%;
+    text-align: end;
 }
 
 .row {
     display: flex;
+    gap: 4px;
     flex-direction: column;
+    /* not working */
     width: 80%;
 }
 
 .buttons {
     display: flex;
+    /* not working */
     justify-content: space-between;
+}
+
+button {
+    flex-grow: 1;
 }
