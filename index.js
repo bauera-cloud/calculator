@@ -18,12 +18,36 @@ function divide(num1, num2) {
     return num1 / num2
 }
 
-function operate(operator, num1, num2) {
+function operate(num1, operator, num2) {
     if(operator === '+') { 
-        add(num1, num2)
+        return add(num1, num2)
     }
 }
-operate('+', '9.2', '3')
+//work with static values. simplest form first.
+//problem: using a string '2+2'...how can I insert the
+//numbers and operator into the operate function?
+
+//I want the array to be in the same order
+//I want an array of 3 elements for each operation
+//I want the numbers to be converted to typeof 'number'
+function expressionArray(string) {
+    return string.split('').map((value, i) => {
+    if(i % 2 === 0) { return Number(value)}
+    return value
+    })
+}
+
+console.log(operate(...expressionArray('2+2')))
+
+
+
+
+
+
+
+
+
+
 
 let display = document.querySelector('.display');
 
