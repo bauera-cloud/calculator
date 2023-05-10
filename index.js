@@ -19,9 +19,8 @@ function divide(num1, num2) {
 }
 
 function operate(num1, operator, num2) {
-    if(operator === '+') { 
-        return add(num1, num2)
-    }
+    if(operator === '+') { return add(num1, num2)}
+    if(operator === '-') { return subtract(num1, num2)}
 }
 //work with static values. simplest form first.
 //problem: using a string '2+2'...how can I insert the
@@ -30,14 +29,14 @@ function operate(num1, operator, num2) {
 //I want the array to be in the same order
 //I want an array of 3 elements for each operation
 //I want the numbers to be converted to typeof 'number'
-function expressionArray(string) {
+function convertExpressToArr(string) {
     return string.split('').map((value, i) => {
     if(i % 2 === 0) { return Number(value)}
     return value
     })
 }
 
-console.log(operate(...expressionArray('2+2')))
+console.log(operate(...convertExpressToArr('2+2')))
 
 
 
@@ -50,35 +49,22 @@ console.log(operate(...expressionArray('2+2')))
 
 
 let display = document.querySelector('.display');
-
-let clearSymbol = document.querySelector('.clear');
-console.dir(display)
-
 let buttons = document.querySelectorAll('button');
 
-//Array.from(buttons)
-// let numbers = buttons.filter((button) => button.classList.value === 'number');
-// let operators = buttons.filter((button) => button.classList.value === "operator");
-
-let operators = [];
-let numbers = [];
 buttons.forEach((button) => {
-    // if (button.classList.value === 'number') { numbers.push(button) }
-    // if (button.classList.value === "operator") { operators.push(button) }
     button.addEventListener('click', (e) => {
-        if (button.classList.value === 'clear') {
-            display.value = '';
-        } else {
+        let result;
+        let btn = button.classList.value;
+        if (btn === 'clear') { return display.value = '';} 
+        else if ((btn === 'equals') && display.value.length === 3) {
+            result = String(operate(...convertExpressToArr(display.value)));
+            display.value = result
+        }else {
             display.value += e.target.textContent
         }
     })
 })
 
-function clear() {
-    display.value = '';
-}
-
-console.log('2+2'.split('').find((el) => { el === '+'}))
 
 /* Plan
     get operations working:
