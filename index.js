@@ -29,15 +29,20 @@ function operate(num1, operator, num2) {
 //I want the array to be in the same order
 //I want an array of 3 elements for each operation
 //I want the numbers to be converted to typeof 'number'
-function convertExpressToArr(string) {
-    return string.split('').map((value, i) => {
-    if(i % 2 === 0) { return Number(value)}
-    return value
-    })
-}
 
+
+//subproblem: convert '12+1' into 12 '+' 1
+function convertExpressToArr(string) {
+    let indexOfOperator = string.indexOf('+')
+    let operator = string.split('').find((value) => value === '+')
+    let num1 = Number(string.slice(0, indexOfOperator))
+    let num2 = Number(string.slice(indexOfOperator + 1))
+    return [num1, operator, num2]
+}
+// console.log(twoPointO('12+1'))
 console.log(operate(...convertExpressToArr('2+2')))
 
+//convert '12+' to a number
 
 
 
@@ -50,13 +55,13 @@ console.log(operate(...convertExpressToArr('2+2')))
 
 let display = document.querySelector('.display');
 let buttons = document.querySelectorAll('button');
+let result;
 
 buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
-        let result;
         let btn = button.classList.value;
         if (btn === 'clear') { return display.value = '';} 
-        else if ((btn === 'equals') && display.value.length === 3) {
+        else if ((btn === 'equals') && display.value.length >= 3) {
             result = String(operate(...convertExpressToArr(display.value)));
             display.value = result
         }else {
