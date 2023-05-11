@@ -21,32 +21,30 @@ function divide(num1, num2) {
 function operate(num1, operator, num2) {
     if(operator === '+') { return add(num1, num2)}
     if(operator === '-') { return subtract(num1, num2)}
+    if(operator === '*') { return multiply(num1, num2)}
+    if(operator === '/') { return divide(num1,num2)}
 }
-//work with static values. simplest form first.
-//problem: using a string '2+2'...how can I insert the
-//numbers and operator into the operate function?
 
 //I want the array to be in the same order
 //I want an array of 3 elements for each operation
 //I want the numbers to be converted to typeof 'number'
 
 
-//subproblem: convert '12+1' into 12 '+' 1
+// converts '12+1' to [12, '+', 1]
 function convertExpressToArr(string) {
-    let indexOfOperator = string.indexOf('+')
-    let operator = string.split('').find((value) => value === '+')
+    let operator = string.split('').find((value) => !parseInt(value))
+    let indexOfOperator = string.indexOf(operator)
     let num1 = Number(string.slice(0, indexOfOperator))
     let num2 = Number(string.slice(indexOfOperator + 1))
     return [num1, operator, num2]
 }
-// console.log(twoPointO('12+1'))
-console.log(operate(...convertExpressToArr('2+2')))
 
-//convert '12+' to a number
+//subproblem: more than 2 numbers - '12+12+12'
 
+//subproblem: identifying operators - '12-12+12'
 
-
-
+//subproblem: using previous result after '=' to add to
+//the next set of numbers
 
 
 
@@ -81,10 +79,6 @@ buttons.forEach((button) => {
     make the clear function working
 */ 
 
-
-// Get operations working
-//2 + 2 = 4 working first.
-
 //Understand the problem:
 
 //Pseudocode:
@@ -97,15 +91,3 @@ buttons.forEach((button) => {
 //change result to a string
 //change display to equal result
 
-//num1operatornum2.split('')
-
-//multiple numbers: ex: 99 - 
-//whatever is in the input before 'operator' is num1 
-//for the function
-
-//numbers should be converted to a number type before added
-//to the operator function
-//
-
-
-///display.textContent = String(operate('+', 2, 2))
