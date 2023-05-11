@@ -31,15 +31,16 @@ function operate(num1, operator, num2) {
 
 
 // converts '12+1' to [12, '+', 1]
-function convertExpressToArr(string) {
-    let operator = string.split('').find((value) => !parseInt(value))
-    let indexOfOperator = string.indexOf(operator)
-    let num1 = Number(string.slice(0, indexOfOperator))
-    let num2 = Number(string.slice(indexOfOperator + 1))
+function convertExpressToArr(str) {
+    let operator = str.split('').find((value) => !parseInt(value) && value !== '.')
+    let num1 = Number(str.slice(0, str.indexOf(operator)))
+    let num2 = Number(str.slice(str.indexOf(operator) + 1))
     return [num1, operator, num2]
 }
 
+
 //subproblem: more than 2 numbers - '12+12+12'
+//the operate fn will always have 3 values
 
 //subproblem: identifying operators - '12-12+12'
 
