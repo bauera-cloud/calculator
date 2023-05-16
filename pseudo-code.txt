@@ -1,1 +1,12 @@
 Subproblem: 
+
+User is able to use an operator at the beginning or
+end of the operation. Only the negative operator 
+should work.
+
+
+Pseudo-code:
+WHEN the user clicks an operator button:
+    IF the operator is not the '-' operator,
+        operator doesn't display
+

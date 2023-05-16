@@ -108,6 +108,10 @@ button {
     background-color: #d6d4d4;
 }
 
+.button-row>.operator {
+    background-color: rgb(234, 255, 234);
+}
+
 footer {
     display: flex;
     justify-content: center;
