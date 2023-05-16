@@ -29,32 +29,18 @@ function convertExpressToArr(str) {
     return [operator, num1, num2]
 }
 
-//Plan: simplify addEventListener fn by adding other
-//functions for their own individual tasks. In addition,
-//allow each function to be readable in English.
-
-//subproblems:
-//  operator can only be 2nd in position of the string
-//  display error message if user tries to divide by 0
-//  disable the decimal button if there's already one in the display or get 12.2.3.1
-//  user is able to click display operator at any
-//position in the display. Only negative button should work
-
-
-
-
-
 let display = document.querySelector('.display');
 let buttons = document.querySelectorAll('button');
+let numbers = Array.from(buttons).filter((button) => button.textContent)
+console.log(numbers)
+
+
 let result;
-let expression = display.value
 
 buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
         let btn = button.classList.value;
-        if (!isClearBtn(btn) && !isDeleteBtn(btn) && !isEqualsBtn(btn)) {
-            display.value += e.target.textContent
-        }
+        preventNonDisplayableButtons(btn, e)
         if (isClearBtn(btn)) display.value = '';
         if (isDeleteBtn(btn)) { display.value = deletePrevValue(display.value) }
         //                   && isValidExpression(string)
@@ -62,10 +48,6 @@ buttons.forEach((button) => {
             result = String(operate(...convertExpressToArr(display.value)).toFixed(1));
             display.value = result
         }
-        // if(isValidExpression()) {
-        // result = operate()
-        // displayResult(result)
-        // }
     })
 })
 
@@ -81,6 +63,10 @@ function isDeleteBtn(btn) {
     return btn === 'delete-btn'
 }
 
+function isNegativeBtn(btn) {
+    return btn === 'negative-btn'
+}
+
 function deletePrevValue(display) {
     if (display) {
         let prevValue = display[display.length - 1]
@@ -90,31 +76,8 @@ function deletePrevValue(display) {
     }
 }
 
-
-//if there's a number before the operator and a number after
-//the operator it is a valid expression: return true: 
-//else false
-
-//checks to see if string from user is in the right order
-//before changing the values into numbers or operators
-function isValidExpression() {
-
+function preventNonDisplayableButtons(btn, e) {
+    if (!isClearBtn(btn) && !isDeleteBtn(btn) && !isEqualsBtn(btn)) {
+        display.value += e.target.textContent
+    }
 }
-// console.log(isValidExpression('12+2'))
-
-
-
-
-
-
-
-
-
-
-
-//Other subproblems I don't have to fix...
-
-//subproblem: more than 2 numbers - '12+12+12'
-//subproblem: identifying operators - '12-12+12'
-//subproblem: using previous result after '=' to add to
-//the next set of numbers and use on other display

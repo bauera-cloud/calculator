@@ -1,0 +1,28 @@
+Sub-problems:
+
+
+No error message when user tries to divide by 0
+
+Disable the decimal button if there’s already one in the 
+display ex: can’t be 12.2.3
+
+he DELETE button also deletes the result
+
+User is able to use an operator at the beginning or
+end of the operation. Only the negative operator 
+should work.
+
+User is able to have multiple operators in the expression
+
+First number isn’t able to be recognized as a negative 
+number
+
+There’s only a display for the result instead of result 
+and expression
+
+User can’t user previous result as apart of a new 
+expression
+
+Result always has a decimal. It should only display a 
+decimal if a floating number was used in the expression
+
