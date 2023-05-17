@@ -26,3 +26,41 @@ expression
 Result always has a decimal. It should only display a 
 decimal if a floating number was used in the expression
 
+
+
+NOTES: 
+    Be aware of all possible actions/operations user could 
+    take
+    work with the operation with the most constraints
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Subproblems I don't have to fix...
+
+Expression can’t be more than two numbers - 12+12+12
+
+Expression isn’t able to identify more than one operator 
+in expression 12-12+12
+
+
+EVENTUALLY...
+I could make nthIndexOf for more than 1 operator.

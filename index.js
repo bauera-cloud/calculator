@@ -40,8 +40,9 @@ let result;
 buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
         let btn = button.classList.value;
-        preventNonDisplayableButtons(btn, e)
-        if (isClearBtn(btn)) display.value = '';
+        preventDisplayClearDeleteEquals(btn, e)
+        if (isOperator && !isNegativeBtn)
+            if (isClearBtn(btn)) display.value = '';
         if (isDeleteBtn(btn)) { display.value = deletePrevValue(display.value) }
         //                   && isValidExpression(string)
         if (isEqualsBtn(btn) && display.value.length >= 3) {
@@ -76,8 +77,26 @@ function deletePrevValue(display) {
     }
 }
 
-function preventNonDisplayableButtons(btn, e) {
+function preventDisplayClearDeleteEquals(btn, e) {
     if (!isClearBtn(btn) && !isDeleteBtn(btn) && !isEqualsBtn(btn)) {
         display.value += e.target.textContent
     }
 }
+
+function isOperator(string) {
+    let isOperatorRegex = new RegExp('[\*\+/-]')
+    let operator = isOperatorRegex.test(string)
+    return operator
+}
+console.log(isOperator('+'))
+
+let expression = '1+2'
+function isValidExpression(expression) {
+    console.log(expression.indexOf())
+    let expressionArr = expression.split('')
+    console.log(expressionArr)
+    return
+}
+console.log(isValidExpression(expression))
+
+

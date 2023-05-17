@@ -1,12 +1,103 @@
 Subproblem: 
 
 User is able to use an operator at the beginning or
-end of the operation. Only the negative operator 
-should work.
+end of the operation. Only the negative operator or a  
+number should work.
+
+Plan: 
+Don't allow user to make an incorrect expression.
+
+Simpler Solution:
+
+the only buttons allowed for the first item in the display/
+expression are numbers and the negative symbol.
+
+The only buttons allowed to be used for the second item in
+the display/expression are operators.
+
+the only buttons allowed for the third item in the display/
+expression are numbers and the negative symbol.
 
 
-Pseudo-code:
-WHEN the user clicks an operator button:
-    IF the operator is not the '-' operator,
-        operator doesn't display
+
+Ultimate Solution:
+
+only allow the negative and numbers buttons to be added to
+the expression on the even indices (every other odd item
+in the display/expression...starts at index 0)
+
+only allow the operator buttons to be added to the display
+if it's at an odd index (if it's every other even number
+in the display/expression)
+
+
+preventIncorrectExpression()
+
+------------------------------------------------------------
+
+Pseudocode:
+
+WHEN user clicks amongst the list of buttons,
+    IF it's the even index item in the display/expression AND (it's the negative operator OR a number),
+        add the negative or number button string to the display/expression
+    ELSE IF it's the odd index item in the display/expression AND it's an operator AND not a number
+        add the operator button string to the display/expression
+
+
+Code: 
+buttons.addEventListener('click', (e) => {
+    if(isOddItemInExpression() && (isNegativeBtn || isNumber())) {
+        addToDisplay()
+    } else if (isEvenItemInExpression() && isOperator() && !isNumber()) {
+        addToDisplay()
+    } else {
+        //for clear, delete, decimal, and =
+        display.value = '';
+    }
+})
+
+something close to this...
+
+function isNumber() {
+    //number btn nodes
+    buttons.filter((button) => button.classList.value = 'number')
+} 
+
+function isOperator() {
+    //operator btn nodes
+    buttons.filter((button) => button.classList.value = 'operator')
+} 
+
+function isNegativeBtn() {
+    //negative btn node
+    buttons.filter((button) => button.classList.value = 'negative')  ???
+}
+
+function isOddItemInExpression() {
+    return i % 2 = 0
+}
+
+function isEvenItemInExpression() {
+    return i % 2 = 1
+}
+
+function addToDisplay(display, e) {
+    display.value += e.target.textContent
+}
+
+    
+-----------------------------------------------
+
+the string has to be checked at positions 1, and 3 BEFORE
+changing the values into numbers.
+
+Then change items at even indeces into numbers. Even indeces stay strings.
+
+
+//this needs to work:
+
+let expression = ['-12' , '+', '15']
+[-12, '+', 15]
+user clicks '='
+//returns 3
 
