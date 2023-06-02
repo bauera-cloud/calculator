@@ -38,21 +38,24 @@ preventIncorrectExpression()
 Pseudocode:
 
 WHEN user clicks amongst the list of buttons,
-    IF it's the even index item in the display/expression AND (it's the negative operator OR a number),
-        add the negative or number button string to the display/expression
-    ELSE IF it's the odd index item in the display/expression AND it's an operator AND not a number
+    IF it's the even index item in the display/expression AND (isNumber() || isNegativeBtn()),
+        add number or negative button string to the display + expression
+    IF it's the odd index item in the display/expression && it's an operator AND not a number
+        IF it's isNegativeBtn() AND last index !isNegativeBtn()
+            add negative symbol to display + expression array
+        ELSE IF it's a 
+    
         add the operator button string to the display/expression
+    IF it's the odd index item and the last item was a '-' and isNumber()
 
 
 Code: 
 buttons.addEventListener('click', (e) => {
-    if(isOddItemInExpression() && (isNegativeBtn || isNumber())) {
+    if(isOddItemInExpression() && (isNegativeBtn() || isNumber())) {
         addToDisplay()
-    } else if (isEvenItemInExpression() && isOperator() && !isNumber()) {
+    } 
+    if (isEvenItemInExpression() && isOperator() && !isNumber()) {
         addToDisplay()
-    } else {
-        //for clear, delete, decimal, and =
-        display.value = '';
     }
 })
 
@@ -100,4 +103,35 @@ let expression = ['-12' , '+', '15']
 [-12, '+', 15]
 user clicks '='
 //returns 3
+
+
+
+
+idea: make display.value = ''
+let  expression = []
+each button pressed expression.push(btn) to the array.
+
+then change the value into a number,
+then concat that to the display.value
+
+
+let expression = ['12', '1'];
+display.value = expression.join('')
+//returns '12+
+
+
+
+I need this to work:
+[]
+.push('1')  if it's the first index
+//returns ['1']
+
+['2']
+.push('3') if it's the first or third index push
+
+
+
+if button is a negative button, only allow numbers.
+    
+else only  allow operators
 

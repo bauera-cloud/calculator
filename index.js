@@ -100,3 +100,16 @@ function isValidExpression(expression) {
 console.log(isValidExpression(expression))
 
 
+
+
+
+
+
+//tests
+
+
+
+
+
+
+
