@@ -57,6 +57,14 @@ function validateExpression(button, btnString) {
     }
 }
 
+function divideByZero(button) {
+    let lastOperator = expression[expression.length - 2]
+    let lastItemInExpression = expression[expression.length - 1]
+    if (oddIndexInExpression(expression) && isEqualsBtn(button) && lastOperator === '/' && lastItemInExpression === '0') {
+        return true
+    }
+}
+
 function remove(button) {
     if (button.classList.value === 'delete-btn') {
         expression.pop()
@@ -72,7 +80,9 @@ function clear(button) {
 }
 
 function calculate(button) {
-    if (oddIndexInExpression(expression) && isEqualsBtn(button)) {
+    if (divideByZero(button)) {
+        display.value = "Can't divide by 0";
+    } else if (oddIndexInExpression(expression) && isEqualsBtn(button)) {
         let result = eval(expression.join(' '))
         display.value = result
     }
