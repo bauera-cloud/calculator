@@ -1,26 +1,3 @@
-// function add(num1, num2) {
-//     return num1 + num2
-// }
-
-// function subtract(num1, num2) {
-//     return num1 - num2
-// }
-
-// function multiply(num1, num2) {
-//     return num1 * num2
-// }
-
-// function divide(num1, num2) {
-//     return num1 / num2
-// }
-
-// function operate(operator, num1, num2) {
-//     if (operator === '+') { return add(num1, num2) }
-//     if (operator === '-') { return subtract(num1, num2) }
-//     if (operator === '*') { return multiply(num1, num2) }
-//     if (operator === '/') { return divide(num1, num2) }
-// }
-
 let display = document.querySelector('.display');
 let buttons = document.querySelectorAll('button');
 let expression = [];
@@ -39,52 +16,60 @@ buttons.forEach(button => {
 
 
 function validateExpression(button, btnString) {
-    if (evenIndexInExpression(expression) && isNumber(button) && negativeNum) {
+    let negativeBtn = button.classList.value === 'negative operator'
+    let decimalBtn = button.classList.contains('decimal');
+    let operatorBtn = button.classList.contains('operator')
+    let numberBtn = button.classList.contains('number');
+    let oddIndexInExpression = expression.length % 2 === 1;
+    let evenIndexInExpression = expression.length % 2 === 0;
+
+    if (evenIndexInExpression && numberBtn && negativeNum) {
         expression.push('-' + btnString)
         negativeNum = false;
         addToDisplay(expression)
     }
-    if (evenIndexInExpression(expression) && isNegativeBtn(button)) {
+    if (evenIndexInExpression && negativeBtn) {
         negativeNum = true;
         display.value += '-'
-    } else if (evenIndexInExpression(expression) && isNumber(button)) {
+    } else if (evenIndexInExpression && numberBtn) {
+        expression.push(btnString)
+        addToDisplay(expression)
+    } else if (evenIndexInExpression && decimalBtn) {
         expression.push(btnString)
         addToDisplay(expression)
     }
-    if (oddIndexInExpression(expression) && isOperator(button)) {
+    if (oddIndexInExpression && operatorBtn) {
         expression.push(btnString)
         addToDisplay(expression)
     }
+    //change functions to variable names
 }
 
-function divideByZero(button) {
+function divideByZero() {
+    let oddIndexInExpression = expression.length % 2 === 1;
+    let equalsBtn = document.querySelector('.equals-btn');
     let lastOperator = expression[expression.length - 2]
     let lastItemInExpression = expression[expression.length - 1]
-    if (oddIndexInExpression(expression) && isEqualsBtn(button) && lastOperator === '/' && lastItemInExpression === '0') {
+    if (oddIndexInExpression && equalsBtn && lastOperator === '/' && lastItemInExpression === '0') {
         return true
+    } else {
+        return false
     }
 }
 
 function remove(button) {
-    if (button.classList.value === 'delete-btn') {
+    let deleteBtn = button.classList.value === 'delete-btn'
+    if (deleteBtn) {
         expression.pop()
         addToDisplay(expression)
     }
 }
 
 function clear(button) {
-    if (button.classList.value === 'clear-btn') {
-        display.value = '';
+    let clearBtn = button.classList.value === 'clear-btn';
+    if (clearBtn) {
         expression = [];
-    }
-}
-
-function calculate(button) {
-    if (divideByZero(button)) {
-        display.value = "Can't divide by 0";
-    } else if (oddIndexInExpression(expression) && isEqualsBtn(button)) {
-        let result = eval(expression.join(' '))
-        display.value = result
+        addToDisplay(expression)
     }
 }
 
@@ -92,30 +77,13 @@ function addToDisplay(expression) {
     display.value = expression.join('')
 }
 
-//buttons
-function isNumber(button) {
-    return button.classList.contains('number')
-}
-
-function isEqualsBtn(button) {
-    return button.classList.value === 'equals-btn'
-}
-
-function isOperator(button) {
-    return button.classList.contains('operator')
-}
-
-function isNegativeBtn(button) {
-    //negative btn node
-    return button.classList.value === 'negative operator'
-}
-
-//index
-function oddIndexInExpression(expression) {
-    if (!expression) { return true }
-    return expression.length % 2 === 1
-}
-
-function evenIndexInExpression(expression) {
-    return expression.length % 2 === 0
+function calculate(button) {
+    let oddIndexInExpression = expression.length % 2 === 1;
+    let equalsBtn = button.classList.value === 'equals-btn';
+    if (divideByZero()) {
+        display.value = "Can't divide by 0";
+    } else if (oddIndexInExpression && equalsBtn) {
+        let result = eval(expression.join(' '))
+        display.value = result
+    }
 }

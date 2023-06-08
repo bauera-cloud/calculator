@@ -1,8 +1,5 @@
 Sub-problems:
 
-
-No error message when user tries to divide by 0
-
 There’s only a display for the result instead of result 
 and expression
 
