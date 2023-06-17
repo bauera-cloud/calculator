@@ -6,21 +6,21 @@ display ex: can’t be 12.2.3
 
 what is allowed:
     .1
-    .01 + .1
-    1.1 + 1.1
+    .01
+    1.1
 
 what isn't allowed:
-    1.1.
-    1.1.1 +
-    1. +
-    1.0 + 1.1.
+    1.1.1
+    1.
 
-constraint:
-    the decimal should only be used as apart of a number -
-        it should only be allowed at every even index in    
-        the expression array
-    the decimal can't be the last part of the number string
-        ex: 1.
+1. 
+    if ('number.'), should change to 'number.0'
+
+constraints:
+    the decimal can't be used in the position of the
+    operator in the expression
+
+    the decimal can't be used twice for a number
     
 in the calculator app,
     if the end of number string ends with '.' ex: 1.
@@ -40,16 +40,12 @@ Plan:
 //since the element can't be an operator, .map(number)
     will always be a number
 
-    expression.some((number) => number === '.') {
+    expression.some((number) => (number === '.' || number === '-.')) {
         display.value = 'Format error'
     }
 
 
 
-allow decimal at evenIndex in the expression
-IF evenIndex && (isDecimal(button) || isNumber(number) || isNegativeBtn(button))
-    expression.push()
-    addToDisplay(expression)
 
 right now..
 it works by allowing only a '.' for the first item, operator, 
@@ -97,11 +93,6 @@ expression[i] + 'btnString'
 
 
 
-how to calculator app should work:
-    allow only the numbers || - || . to be added to the display
-    if the first item has a - then number || . then number 
-        then the operator is allowed to be selected as
-            the second item in the display
 
 selecting clear, or delete at any point will be allowed.
 selecting equals is allowed only if expression is at an
@@ -133,3 +124,47 @@ How I'd like it to work:
 ['.1', '*', '-3']
 
 
+PSEUDOCODE
+['x']
+if the last value in the last item is a number,
+    if the user selects a number or decimal,
+        add to that to the first item.
+    else if the user selects an operator,
+        add the operator as the next item in the expression.
+
+if the last value in the last item is a decimal,
+    if the user selects a number
+        add to that to the first item.
+    else if the user selects an operator,
+        add the operator as the next item in the expression.
+
+if the last value in the last item is a negative,
+    if the user selects a number or decimal,
+        add that to the first item.
+
+xxx if the (last item is an operator or !expression.length) && (user selects a number, decimal, or negative)
+        add that to the next item in the expression
+    
+*/
+
+
+Goal: allow each of these for the expression:
+    decimals:
+    ['.', '+', '-.']
+    ['-.', '+', '.'] vice versa
+    returns 'format error'
+
+    ['1.', '+', '.1'] change to
+    ['1.0', '+', '.1']
+    returns 1.1
+
+    multiple numbers:
+    ['11', '+' '111']
+    returns 122
+
+    negative + double negatives
+    ['-1', '-' , '-2']
+    returns 1
+
+    shouldn't allow:
+    ['1.1.', '+', '1']

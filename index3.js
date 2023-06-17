@@ -5,6 +5,7 @@ let negativeNum = false;
 
 buttons.forEach(button => {
     button.addEventListener('click', (e) => {
+        console.log(expression)
         let btnString = e.target.textContent
         clear(button)
         remove(button)
@@ -20,28 +21,30 @@ function validateExpression(button, btnString) {
     let decimalBtn = button.classList.contains('decimal');
     let operatorBtn = button.classList.contains('operator')
     let numberBtn = button.classList.contains('number');
-    let oddIndexInExpression = expression.length % 2 === 1;
-    let evenIndexInExpression = expression.length % 2 === 0;
+    // let oddIndexInExpression = expression.length % 2 === 1;
+    // let evenIndexInExpression = expression.length % 2 === 0;
+    let lastItemInExpression = expression[expression.length - 1];
+    let lastValueInLastItem = lastItemInExpression.slice(-1);
 
-    if (evenIndexInExpression && numberBtn && negativeNum) {
-        expression.push('-' + btnString)
-        negativeNum = false;
-        addToDisplay(expression)
-    }
-    if (evenIndexInExpression && negativeBtn) {
-        negativeNum = true;
-        display.value += '-'
-    } else if (evenIndexInExpression && numberBtn) {
-        expression.push(btnString)
-        addToDisplay(expression)
-    } else if (evenIndexInExpression && decimalBtn) {
+    if ((!expression.length || isOperator(lastItemInExpression)) && (decimalBtn || negativeBtn || numberBtn)) {
         expression.push(btnString)
         addToDisplay(expression)
     }
-    if (oddIndexInExpression && operatorBtn) {
-        expression.push(btnString)
-        addToDisplay(expression)
+    if (isNumber(lastValueInLastItem) && (numberBtn || decimalBtn)) {
+        lastValueInLastItem + btnString
     }
+    if (isDecimal(lastValueInLastItem) && numberBtn) {
+        lastValueInLastItem + btnString
+    }
+    if (isNegative(lastValueInLastItem) && (numberBtn || decimalBtn)) {
+        lastValueInLastItem + btnString
+    }
+
+
+    // if (oddIndexInExpression && operatorBtn) {
+    //     expression.push(btnString)
+    //     addToDisplay(expression)
+    // }
 }
 
 function divideByZero() {
@@ -85,4 +88,20 @@ function calculate(button) {
         let result = eval(expression.join(' '))
         display.value = result
     }
+}
+
+function isOperator(item) {
+    return /[\*\/+-]/g.test(item)
+}
+
+function isNumber(item) {
+    return /[0-9]/g.test(item)
+}
+
+function isNegative(item) {
+    return /-/g.test(item)
+}
+
+function isDecimal(item) {
+    return /\./g.test(item)
 }
