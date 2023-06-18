@@ -168,3 +168,121 @@ Goal: allow each of these for the expression:
 
     shouldn't allow:
     ['1.1.', '+', '1']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Goal: 
+restrict user from making an invalid expression, and
+evaluate a large expression with correct order of operations.
+
+Plan:
+    STEP #: validateExpression
+        allow only certain buttons to be added to the expression
+        array and to number items at certain times
+    STEP #: orderOfOperationsMdas (working title)
+        calculate each small expression within the large expression
+        in order of operations but only including MDAS
+
+
+for validateExpression:
+
+a while loop could allow any number of operands
+and operators in the expression.
+however, if I allow more than one operand,
+then I have to figure out how to do order of operations
+
+I could do
+    option 1: limit to 3 items only
+        limit to 3 items in expression just like the project instructions
+    option 2: recreate PEMDAS except it's MDAS
+        use a while loop which allows any number of operands and operators
+        which means recreating order of operations using conditional statements
+
+
+option 2: recreating PEMDAS except it's MDAS
+
+    if there's a multiplication operator,
+        use the number in the expression before and after it,
+        pass it to the multiply function which returns a string
+        the expression changes
+    if there's a division operator,
+        use the number in the expression before and after it,
+        pass it to the division function which returns a string
+        the expression changes
+    if there's a addition operator,
+        use the number in the expression before and after it,
+        pass it to the multiply function which returns a string
+        the expression changes
+    if there's a subtraction operator,
+        use the number in the expression before and after it,
+        pass it to the division function which returns a string
+        the expression changes
+example:
+
+function calcResult(smallExpression) {
+    let [num1, operator, num2] = smallExpression;
+    switch(operator) {
+        case '+': return add(num1, num2).toString()
+        case '-': return subtract(num1, num2).toString()
+        case '*': return multiply(num1, num2).toString()
+        case '/': return divide(num1, num2).toString()
+    }
+}
+
+    let expressionArr = ['9', '+', '4', '/', '4', '*', '6', '-', '1'];
+    let isMultiplicationOperator = expressionArr.includes('*');
+
+    if(isMultiplicationOperator) {
+        operatorIndex = indexOf('*') // returns first * index
+        //get small expression array with multiplication operator
+        let smallExpression = expressionArr.slice(operatorIndex - 1, operatorIndex + 3)
+        //mutate expressionArr, replace '4', '*', '6' with '24'
+        expressionArr.splice(operatorIndex - 1, 3, calcResult(smallExpression) //returns '24')
+            //returns ['9', '+', '4', '/', '24, '-', '1']
+    }
+
+
+
+
+orderOfOperationsMdas while loop:
+
+while there isn't at least 3 items in the expression, 
+    and last item in the expression isn't an operator/ is an even index
+    and user didn't click equals button
+
+let isExpressionValid = false;
+validateExpression(expression) //changes isExpressionValid = true;?
+
+
+
+if user clicks equals button,
+    and there's at least 3 items in the expression,
+    and the expression ends at an even index
+        isExpressionValid = true;
+        break from the while loop
