@@ -1,9 +1,9 @@
 //once there's an array of operands and operators
 //calcUsingOrderOfOperations() replaces eval()
 
-let expressionArr = ['9', '+', '4', '/', '4', '*', '6', '-', '1', '*', '2'];
-
-console.log(calcUsingOrderOfOperations(expressionArr))
+function convertDisplayToArr(expressionStr) {
+    return expressionStr.match(/(?<=^|[-+*/])\-\d+|\d+|[-+*/]/g);
+}
 
 function calcUsingOrderOfOperations(expressionArr) {
     while (expressionArr.length > 1) {
@@ -27,7 +27,6 @@ function calcUsingOrderOfOperations(expressionArr) {
             operatorIndex = expressionArr.indexOf('+')
             smallExpression = expressionArr.slice(operatorIndex - 1, operatorIndex + 3)
             expressionArr.splice(operatorIndex - 1, 3, calcResult(smallExpression))
-            //returns ['9.016', '-', '1']
         }
         while (expressionArr.includes('-')) {
             operatorIndex = expressionArr.indexOf('-')
