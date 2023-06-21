@@ -23,6 +23,7 @@ function validateExpression(button, btnString) {
     let oddIndexInExpression = expression.length % 2 === 1;
     let evenIndexInExpression = expression.length % 2 === 0;
 
+
     if (evenIndexInExpression && numberBtn && negativeNum) {
         expression.push('-' + btnString)
         negativeNum = false;

@@ -1,9 +1,10 @@
-decimal button isn't allowed ever. 
-add floating point numbers to the expression array
-
 Disable the decimal button if there’s already one in the 
 display ex: can’t be 12.2.3
 
+the decimal can't be used in the position of the operator in the 
+expression
+
+for each operand,
 what is allowed:
     .1
     .01
@@ -12,17 +13,10 @@ what is allowed:
 what isn't allowed:
     1.1.1
     1.
-
-1. 
-    if ('number.'), should change to 'number.0'
-
-constraints:
-    the decimal can't be used in the position of the
-    operator in the expression
-
-    the decimal can't be used twice for a number
     
-in the calculator app,
+
+    
+calculator app functionality:
     if the end of number string ends with '.' ex: 1.
         change to 1.0
     if any instance of a number string only has a '.'
@@ -30,69 +24,22 @@ in the calculator app,
     if there's already a '.' in the number string,
         the '.' button is disabled for that number
 
-Plan:
-    allow decimal for item at evenIndex in the expression
+calc app imitation plan:
 
     let endsWithDecimal = /\.$/g.test(numberString)
-    expression.map((number) => {
-        if(numberEndsWithDecimal) return `${number}0`
-    })
-//since the element can't be an operator, .map(number)
-    will always be a number
+    numberString = `${numberString}0';
+    //change '1.' to '1.0'
 
     expression.some((number) => (number === '.' || number === '-.')) {
         display.value = 'Format error'
     }
+    //returns format error
 
 
 
 
-right now..
-it works by allowing only a '.' for the first item, operator, 
-    then possibly another '.' for the third item
-it needs to allow any number of numbers after the dot
-    and concat that to the first item in the expression
-['.']
-if numberbtn
-expression[i] + 'btnString'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Goal: 
+restrict user from making an invalid expression, and
 
 selecting clear, or delete at any point will be allowed.
 selecting equals is allowed only if expression is at an
@@ -168,121 +115,3 @@ Goal: allow each of these for the expression:
 
     shouldn't allow:
     ['1.1.', '+', '1']
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Goal: 
-restrict user from making an invalid expression, and
-evaluate a large expression with correct order of operations.
-
-Plan:
-    STEP #: validateExpression
-        allow only certain buttons to be added to the expression
-        array and to number items at certain times
-    STEP #: orderOfOperationsMdas (working title)
-        calculate each small expression within the large expression
-        in order of operations but only including MDAS
-
-
-for validateExpression:
-
-a while loop could allow any number of operands
-and operators in the expression.
-however, if I allow more than one operand,
-then I have to figure out how to do order of operations
-
-I could do
-    option 1: limit to 3 items only
-        limit to 3 items in expression just like the project instructions
-    option 2: recreate PEMDAS except it's MDAS
-        use a while loop which allows any number of operands and operators
-        which means recreating order of operations using conditional statements
-
-
-option 2: recreating PEMDAS except it's MDAS
-
-    if there's a multiplication operator,
-        use the number in the expression before and after it,
-        pass it to the multiply function which returns a string
-        the expression changes
-    if there's a division operator,
-        use the number in the expression before and after it,
-        pass it to the division function which returns a string
-        the expression changes
-    if there's a addition operator,
-        use the number in the expression before and after it,
-        pass it to the multiply function which returns a string
-        the expression changes
-    if there's a subtraction operator,
-        use the number in the expression before and after it,
-        pass it to the division function which returns a string
-        the expression changes
-example:
-
-function calcResult(smallExpression) {
-    let [num1, operator, num2] = smallExpression;
-    switch(operator) {
-        case '+': return add(num1, num2).toString()
-        case '-': return subtract(num1, num2).toString()
-        case '*': return multiply(num1, num2).toString()
-        case '/': return divide(num1, num2).toString()
-    }
-}
-
-    let expressionArr = ['9', '+', '4', '/', '4', '*', '6', '-', '1'];
-    let isMultiplicationOperator = expressionArr.includes('*');
-
-    if(isMultiplicationOperator) {
-        operatorIndex = indexOf('*') // returns first * index
-        //get small expression array with multiplication operator
-        let smallExpression = expressionArr.slice(operatorIndex - 1, operatorIndex + 3)
-        //mutate expressionArr, replace '4', '*', '6' with '24'
-        expressionArr.splice(operatorIndex - 1, 3, calcResult(smallExpression) //returns '24')
-            //returns ['9', '+', '4', '/', '24, '-', '1']
-    }
-
-
-
-
-orderOfOperationsMdas while loop:
-
-while there isn't at least 3 items in the expression, 
-    and last item in the expression isn't an operator/ is an even index
-    and user didn't click equals button
-
-let isExpressionValid = false;
-validateExpression(expression) //changes isExpressionValid = true;?
-
-
-
-if user clicks equals button,
-    and there's at least 3 items in the expression,
-    and the expression ends at an even index
-        isExpressionValid = true;
-        break from the while loop

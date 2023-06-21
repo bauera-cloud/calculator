@@ -1,107 +1,66 @@
-let display = document.querySelector('.display');
-let buttons = document.querySelectorAll('button');
-let expression = [];
-let negativeNum = false;
+//once there's an array of operands and operators
+//calcUsingOrderOfOperations() replaces eval()
 
-buttons.forEach(button => {
-    button.addEventListener('click', (e) => {
-        console.log(expression)
-        let btnString = e.target.textContent
-        clear(button)
-        remove(button)
-        validateExpression(button, btnString)
-        calculate(button)
-        console.log(expression)
-    })
-})
+let expressionArr = ['9', '+', '4', '/', '4', '*', '6', '-', '1', '*', '2'];
 
+console.log(calcUsingOrderOfOperations(expressionArr))
 
-function validateExpression(button, btnString) {
-    let negativeBtn = button.classList.value === 'negative operator'
-    let decimalBtn = button.classList.contains('decimal');
-    let operatorBtn = button.classList.contains('operator')
-    let numberBtn = button.classList.contains('number');
-    // let oddIndexInExpression = expression.length % 2 === 1;
-    // let evenIndexInExpression = expression.length % 2 === 0;
-    let lastItemInExpression = expression[expression.length - 1];
-    let lastValueInLastItem = lastItemInExpression.slice(-1);
+function calcUsingOrderOfOperations(expressionArr) {
+    while (expressionArr.length > 1) {
+        let smallExpression;
+        let operatorIndex;
 
-    if ((!expression.length || isOperator(lastItemInExpression)) && (decimalBtn || negativeBtn || numberBtn)) {
-        expression.push(btnString)
-        addToDisplay(expression)
+        while (expressionArr.includes('*')) {
+            operatorIndex = expressionArr.indexOf('*') // returns first * index
+            //get small expression array with multiplication operator
+            smallExpression = expressionArr.slice(operatorIndex - 1, operatorIndex + 3)
+            //mutate expressionArr, replace '4', '*', '6' with '24'
+            expressionArr.splice(operatorIndex - 1, 3, calcResult(smallExpression)) //returns '24')
+            //returns ['9', '+', '4', '/', '24, '-', '1', '*', '2']
+        }
+        while (expressionArr.includes('/')) {
+            operatorIndex = expressionArr.indexOf('/')
+            smallExpression = expressionArr.slice(operatorIndex - 1, operatorIndex + 3)
+            expressionArr.splice(operatorIndex - 1, 3, calcResult(smallExpression))
+        }
+        while (expressionArr.includes('+')) {
+            operatorIndex = expressionArr.indexOf('+')
+            smallExpression = expressionArr.slice(operatorIndex - 1, operatorIndex + 3)
+            expressionArr.splice(operatorIndex - 1, 3, calcResult(smallExpression))
+            //returns ['9.016', '-', '1']
+        }
+        while (expressionArr.includes('-')) {
+            operatorIndex = expressionArr.indexOf('-')
+            smallExpression = expressionArr.slice(operatorIndex - 1, operatorIndex + 3)
+            expressionArr.splice(operatorIndex - 1, 3, calcResult(smallExpression))
+        }
     }
-    if (isNumber(lastValueInLastItem) && (numberBtn || decimalBtn)) {
-        lastValueInLastItem + btnString
-    }
-    if (isDecimal(lastValueInLastItem) && numberBtn) {
-        lastValueInLastItem + btnString
-    }
-    if (isNegative(lastValueInLastItem) && (numberBtn || decimalBtn)) {
-        lastValueInLastItem + btnString
-    }
-
-
-    // if (oddIndexInExpression && operatorBtn) {
-    //     expression.push(btnString)
-    //     addToDisplay(expression)
-    // }
+    return expressionArr.toString()
 }
 
-function divideByZero() {
-    let oddIndexInExpression = expression.length % 2 === 1;
-    let equalsBtn = document.querySelector('.equals-btn');
-    let lastOperator = expression[expression.length - 2]
-    let lastItemInExpression = expression[expression.length - 1]
-    if (oddIndexInExpression && equalsBtn && lastOperator === '/' && lastItemInExpression === '0') {
-        return true
-    } else {
-        return false
+function calcResult(smallExpressionArr) {
+    let [num1, operator, num2] = smallExpressionArr;
+    num1 = Number(num1); num2 = Number(num2);
+    switch (operator) {
+        case '+': return add(num1, num2).toString()
+        case '-': return subtract(num1, num2).toString()
+        case '*': return multiply(num1, num2).toString()
+        case '/': return divide(num1, num2).toString()
     }
 }
 
-function remove(button) {
-    let deleteBtn = button.classList.value === 'delete-btn'
-    if (deleteBtn) {
-        expression.pop()
-        addToDisplay(expression)
-    }
+function add(num1, num2) {
+    return num1 + num2
 }
 
-function clear(button) {
-    let clearBtn = button.classList.value === 'clear-btn';
-    if (clearBtn) {
-        expression = [];
-        addToDisplay(expression)
-    }
+function subtract(num1, num2) {
+    return num1 - num2
 }
 
-function addToDisplay(expression) {
-    display.value = expression.join('')
+function multiply(num1, num2) {
+    return num1 * num2
 }
 
-function calculate(button) {
-    let oddIndexInExpression = expression.length % 2 === 1;
-    let equalsBtn = button.classList.value === 'equals-btn';
-    if (divideByZero()) {
-        display.value = "Can't divide by 0";
-    } else if (oddIndexInExpression && equalsBtn) {
-        let result = eval(expression.join(' '))
-        display.value = result
-    }
-}
-
-function isOperator(item) {
-    return /[\*\/+-]/g.test(item)
-}
-
-function isNumber(item) {
-    return /[0-9]/g.test(item)
-}
-
-function isNegative(item) {
-    return /-/g.test(item)
-}
-
-function isDecimal(item) {
-    return /\./g.test(item)
+function divide(num1, num2) {
+    return num1 / num2
 }
