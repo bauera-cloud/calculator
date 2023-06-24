@@ -29,8 +29,8 @@ body {
 }
 
 .display,
-.clear-btn,
-.delete-btn,
+#clear-btn,
+#delete-btn,
 .button-row>button {
     border-radius: 5px;
     border: 2px solid black
@@ -73,19 +73,19 @@ button {
     height: 65px;
 }
 
-.clear-btn {
+#clear-btn {
     background-color: lightcyan;
 }
 
-.clear-btn:hover {
+#clear-btn:hover {
     background-color: rgb(194, 253, 253);
 }
 
-.delete-btn {
+#delete-btn {
     background-color: rgb(236, 173, 173);
 }
 
-.delete-btn:hover {
+#delete-btn:hover {
     background-color: rgb(233, 152, 152);
 }
 
