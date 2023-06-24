@@ -23,17 +23,27 @@ buttons.forEach((button) => {
 
         if (button === clearButton) { display.value = ''; }
         // if (button === deleteButton) { deletePrevValue(display.value, prevValue) }
-        if ((lastValue === undefined || isOperator(lastValue)) && (number || decimal || negative)) {
+
+        if (lastValue === undefined && (negative || number || decimal)) {
+            addToDisplay(buttonString)
+        }
+        if (isNegative(lastValue) && (number || decimal)) {
+            addToDisplay(buttonString)
+        } else if (isNegative(lastValue) && operator) {
+            display.value = display.value.replace(/.$/, buttonString)
+        }
+        if (isPositiveOperator(lastValue) && negative) {
+            display.value = display.value.replace(/.$/, "-");
+        } else if (isOperator(lastValue) && !isNegative(lastValue) && (number || decimal || negative)) {
             addToDisplay(buttonString)
         }
         if ((isNumber(lastValue) && decimal && !isDecimalInNumber(getLastNumber())) || (isNumber(lastValue) && (number || operator))) {
             addToDisplay(buttonString)
         }
-        //problem2: ------
         if (isDecimal(lastValue) && (number || operator)) {
             addToDisplay(buttonString)
         }
-        console.log(getLastNumber())
+
     })
 })
 
@@ -67,6 +77,10 @@ function isNumber(lastValue) {
 
 function isDecimal(lastValue) {
     return /\./.test(lastValue);
+}
+
+function isPositiveOperator(lastValue) {
+    return /\+/.test(lastValue)
 }
 
 function isNegative(lastValue) {
