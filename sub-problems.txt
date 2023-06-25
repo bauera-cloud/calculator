@@ -6,12 +6,9 @@ and expression
 User can’t user previous result as apart of a new 
 expression
 
-decimal button isn't allowed ever. 
-add floating point numbers to the expression array
+for calc regex. -11 doesn't work. If the beginning number is a negative number. 
 
-Disable the decimal button if there’s already one in the 
-display ex: can’t be 12.2.3
-
+The delete button doesn't have any functionality.
 
 
 NOTES: 
