@@ -3,15 +3,13 @@ Sub-problems:
 There’s only a display for the result instead of result 
 and expression
 
-User can’t user previous result as apart of a new 
-expression
-
 for calc regex. -11 doesn't work. If the beginning number is a negative number. 
+for calc: 6*-3 has a never ending while loop.
 
 The delete button doesn't have any functionality.
 
-/0 is in expression - have a unique message
 
+saving the html file doesn't work. 
 
 NOTES: 
     Be aware of all possible actions/operations user could 

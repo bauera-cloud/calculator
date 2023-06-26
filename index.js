@@ -73,7 +73,12 @@ function convertDisplayToArr(expressionStr) {
     return expressionStr.match(/[-\+\*\/]|\d*\.\d+|\d+|-\d+/g);
 }
 
+//6*-3 doesn't work.
 function calcUsingOrderOfOperations(expressionArr) {
+    let lastItemInExpression = expressionArr[expressionArr.length - 1];
+    if (isOperator(lastItemInExpression)) {
+        expressionArr.pop()
+    }
     //while arr isn't [24] for example.
     while (expressionArr.length > 1) {
         let smallExpression;
