@@ -3,11 +3,6 @@ let buttons = document.querySelectorAll('button');
 let clearButton = document.getElementById('clear-btn');
 let deleteButton = document.getElementById('delete-btn');
 let equalsButton = document.getElementById('equals-btn')
-let lastValue;
-
-let matchOperator;
-let lastIndexOfOperator;
-let lastNumber;
 
 userClicksCalculatorButton()
 
@@ -27,7 +22,7 @@ function userClicksCalculatorButton() {
 }
 
 function validateExpression(button, e) {
-    lastValue = display.value[display.value.length - 1];
+    let lastValue = display.value[display.value.length - 1];
 
     let buttonString = e.target.textContent;
     let number = button.classList.contains('number');
@@ -136,9 +131,9 @@ function calcSmallExpression(smallExpressionArr) {
 }
 
 function getLastNumber() {
-    matchOperator = display.value.match(/[\*\+/-]/gi);
-    lastIndexOfOperator = matchOperator ? display.value.lastIndexOf(matchOperator[matchOperator.length - 1]) : 0;
-    lastNumber = lastIndexOfOperator === 0 ? display.value.slice(0) : display.value.slice(lastIndexOfOperator + 1);
+    let matchOperator = display.value.match(/[\*\+/-]/gi);
+    let lastIndexOfOperator = matchOperator ? display.value.lastIndexOf(matchOperator[matchOperator.length - 1]) : 0;
+    let lastNumber = lastIndexOfOperator === 0 ? display.value.slice(0) : display.value.slice(lastIndexOfOperator + 1);
     return lastNumber
 }
 
