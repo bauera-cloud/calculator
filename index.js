@@ -2,55 +2,63 @@ let display = document.querySelector('.display');
 let buttons = document.querySelectorAll('button');
 let clearButton = document.getElementById('clear-btn');
 let deleteButton = document.getElementById('delete-btn');
+let equalsButton = document.getElementById('equals-btn')
 let lastValue;
 
 let matchOperator;
 let lastIndexOfOperator;
 let lastNumber;
 
+userClicksCalculatorButton()
 
-buttons.forEach((button) => {
-    button.addEventListener('click', (e) => {
-        lastValue = display.value[display.value.length - 1];
+function userClicksCalculatorButton() {
+    buttons.forEach((button) => {
+        button.addEventListener('click', (e) => {
 
-        let buttonString = e.target.textContent;
-        let number = button.classList.contains('number');
-        let decimal = button.classList.contains('decimal');
-        let operator = button.classList.contains('operator');
-        let negative = button.classList.value === 'negative operator';
-        let equals = button.classList.contains('equals-btn');
+            //delete and clear button functionality
+            if (button === deleteButton) { display.value = display.value.replace(/.$/, ''); }
+            if (button === clearButton) { display.value = ''; }
 
-        //delete and clear button functionality
-        if (button === deleteButton) { display.value = display.value.replace(/.$/, ''); }
-        if (button === clearButton) { display.value = ''; }
+            validateExpression(button, e);
 
-        //if there's no display string and user clicks negative, number, or decimal button. addToDisplay
-        if (lastValue === undefined && (negative || number || decimal)) { addToDisplay(buttonString) }
-
-        //'-' can add (4) or .
-        if (isNegative(lastValue) && (number || decimal)) {
-            addToDisplay(buttonString)
-            //changes '6-*' tp '6*'
-        } else if (isNegative(lastValue) && operator) {
-            display.value = display.value.replace(/.$/, buttonString)
-        }
-        //changes '5+-' to '5-'
-        if (isPositiveOperator(lastValue) && negative) {
-            display.value = display.value.replace(/.$/, "-");
-        } else if (isOperator(lastValue) && !isNegative(lastValue) && (number || decimal || negative)) {
-            addToDisplay(buttonString)
-        }
-
-        //won't allow 1.1.1. Plus if '...3' can add ('1') or ('/')
-        if ((isNumber(lastValue) && decimal && !isDecimalInNumber(getLastNumber())) || (isNumber(lastValue) && (number || operator))) {
-            addToDisplay(buttonString)
-        }
-
-        if (isDecimal(lastValue) && (number || operator)) { addToDisplay(buttonString) }
-
-        if (equals && convertDisplayToArr(display.value).length > 2) { calculateExpression(display) }
+            if (button === equalsButton && convertDisplayToArr(display.value).length > 2) { calculateExpression(display) }
+        })
     })
-})
+}
+
+function validateExpression(button, e) {
+    lastValue = display.value[display.value.length - 1];
+
+    let buttonString = e.target.textContent;
+    let number = button.classList.contains('number');
+    let decimal = button.classList.contains('decimal');
+    let operator = button.classList.contains('operator');
+    let negative = button.classList.value === 'negative operator';
+
+    //if there's no display string and user clicks negative, number, or decimal button. addToDisplay
+    if (lastValue === undefined && (negative || number || decimal)) { addToDisplay(buttonString) }
+
+    //'-' can add (4) or .
+    if (isNegative(lastValue) && (number || decimal)) {
+        addToDisplay(buttonString)
+        //changes '6-*' tp '6*'
+    } else if (isNegative(lastValue) && operator) {
+        display.value = display.value.replace(/.$/, buttonString)
+    }
+    //changes '5+-' to '5-'
+    if (isPositiveOperator(lastValue) && negative) {
+        display.value = display.value.replace(/.$/, "-");
+    } else if (isOperator(lastValue) && !isNegative(lastValue) && (number || decimal || negative)) {
+        addToDisplay(buttonString)
+    }
+
+    //won't allow 1.1.1. Plus if '...3' can add ('1') or ('/')
+    if ((isNumber(lastValue) && decimal && !isDecimalInNumber(getLastNumber())) || (isNumber(lastValue) && (number || operator))) {
+        addToDisplay(buttonString)
+    }
+
+    if (isDecimal(lastValue) && (number || operator)) { addToDisplay(buttonString) }
+}
 
 function doesExpressionCalcByZero(display) {
     return /\/0/g.test(display.value)

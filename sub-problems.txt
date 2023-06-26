@@ -6,8 +6,6 @@ and expression
 for calc regex. -11 doesn't work. If the beginning number is a negative number. 
 for calc: 6*-3 has a never ending while loop.
 
-The delete button doesn't have any functionality.
-
 
 saving the html file doesn't work. 
 
