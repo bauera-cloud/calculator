@@ -20,6 +20,7 @@ buttons.forEach((button) => {
         let decimal = button.classList.contains('decimal');
         let operator = button.classList.contains('operator');
         let negative = button.classList.value === 'negative operator';
+        let equals = button.classList.contains('equals-btn');
 
         if (button === clearButton) { display.value = ''; }
 
@@ -46,8 +47,25 @@ buttons.forEach((button) => {
         }
 
         if (isDecimal(lastValue) && (number || operator)) { addToDisplay(buttonString) }
+
+        if (equals && convertDisplayToArr(display.value).length > 2) { calculateExpression(display) }
     })
 })
+
+function doesExpressionCalcByZero(display) {
+    return /\/0/g.test(display.value)
+}
+
+function calculateExpression(display) {
+    if (doesExpressionCalcByZero(display)) { display.value = "Cannot divide by zero."; }
+    let result;
+    let expression = convertDisplayToArr(display.value);
+    if (expression) {
+        result = calcUsingOrderOfOperations(expression);
+        display.value = result
+    }
+}
+
 
 //-11 doesn't work. If the beginning number is a negative number.
 function convertDisplayToArr(expressionStr) {
@@ -67,29 +85,33 @@ function calcUsingOrderOfOperations(expressionArr) {
             //get small expression array with multiplication operator
             smallExpression = expressionArr.slice(operatorIndex - 1, operatorIndex + 3)
             //mutate expressionArr, replace '4', '*', '6' with '24'
-            expressionArr.splice(operatorIndex - 1, 3, calcResult(smallExpression)) //returns '24')
+            expressionArr.splice(operatorIndex - 1, 3, calcSmallExpression(smallExpression)) //returns '24')
             //returns ['9', '+', '4', '/', '24, '-', '1', '*', '2']
         }
         while (expressionArr.includes('/')) {
             operatorIndex = expressionArr.indexOf('/')
             smallExpression = expressionArr.slice(operatorIndex - 1, operatorIndex + 3)
-            expressionArr.splice(operatorIndex - 1, 3, calcResult(smallExpression))
+            expressionArr.splice(operatorIndex - 1, 3, calcSmallExpression(smallExpression))
         }
         while (expressionArr.includes('+')) {
             operatorIndex = expressionArr.indexOf('+')
             smallExpression = expressionArr.slice(operatorIndex - 1, operatorIndex + 3)
-            expressionArr.splice(operatorIndex - 1, 3, calcResult(smallExpression))
+            expressionArr.splice(operatorIndex - 1, 3, calcSmallExpression(smallExpression))
         }
         while (expressionArr.includes('-')) {
             operatorIndex = expressionArr.indexOf('-')
             smallExpression = expressionArr.slice(operatorIndex - 1, operatorIndex + 3)
-            expressionArr.splice(operatorIndex - 1, 3, calcResult(smallExpression))
+            expressionArr.splice(operatorIndex - 1, 3, calcSmallExpression(smallExpression))
         }
     }
-    return Number(expressionArr).toFixed(2).toString()
+    if (isDecimalInNumber(expressionArr) && expressionArr.toString().length > 3) {
+        return Number(expressionArr).toFixed(2).toString()
+    } else {
+        return expressionArr.toString()
+    }
 }
 
-function calcResult(smallExpressionArr) {
+function calcSmallExpression(smallExpressionArr) {
     let [num1, operator, num2] = smallExpressionArr;
     num1 = Number(num1); num2 = Number(num2);
     switch (operator) {

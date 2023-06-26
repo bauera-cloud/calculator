@@ -10,6 +10,8 @@ for calc regex. -11 doesn't work. If the beginning number is a negative number.
 
 The delete button doesn't have any functionality.
 
+/0 is in expression - have a unique message
+
 
 NOTES: 
     Be aware of all possible actions/operations user could 
