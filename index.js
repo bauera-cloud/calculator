@@ -9,8 +9,6 @@ let lastIndexOfOperator;
 let lastNumber;
 
 
-//make the delete button work without adding it to the display
-
 buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
         lastValue = display.value[display.value.length - 1];
@@ -22,6 +20,8 @@ buttons.forEach((button) => {
         let negative = button.classList.value === 'negative operator';
         let equals = button.classList.contains('equals-btn');
 
+        //delete and clear button functionality
+        if (button === deleteButton) { display.value = display.value.replace(/.$/, ''); }
         if (button === clearButton) { display.value = ''; }
 
         //if there's no display string and user clicks negative, number, or decimal button. addToDisplay
@@ -79,7 +79,7 @@ function calcUsingOrderOfOperations(expressionArr) {
     if (isOperator(lastItemInExpression)) {
         expressionArr.pop()
     }
-    //while arr isn't [24] for example.
+    //while arr isn't [24] for example. Calculate.
     while (expressionArr.length > 1) {
         let smallExpression;
         let operatorIndex;
@@ -177,15 +177,3 @@ function multiply(num1, num2) {
 function divide(num1, num2) {
     return num1 / num2
 }
-
-//delete button function. Not working.
-// function deletePrevValue(display, prevValue) {
-//     if (display) {
-//         return display.replace(prevValue, '')
-//     } else {
-//         return display
-//     }
-// }
-
-
-
