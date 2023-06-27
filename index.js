@@ -4,12 +4,6 @@ let clearButton = document.getElementById('clear-btn');
 let deleteButton = document.getElementById('delete-btn');
 let equalsButton = document.getElementById('equals-btn');
 
-let keyboard = {
-    Escape: 'Esc',
-    Enter: 'Enter',
-    Backspace: 'Backspace'
-};
-
 userClicksCalculatorButton();
 calculatorKeyboardSupport();
 
@@ -28,7 +22,6 @@ function calculatorKeyboardSupport() {
     display.addEventListener('keydown', (e) => {
         e.preventDefault()
         let key = e.code
-        console.log(key)
         validateExpression(e)
         if (key === 'Escape') { clearDisplay() }
         if (key === 'Backspace') { deleteLastValue() }
@@ -45,6 +38,7 @@ function validateExpression(e, button) {
 
 function validateButtonsClicked(e, button) {
     let lastValue = display.value[display.value.length - 1];
+    let secondToLastValue = display.value[display.value.length - 2];
 
     let buttonString = e.target.textContent;
     let number = button.classList.contains('number');
@@ -60,7 +54,7 @@ function validateButtonsClicked(e, button) {
     if (isNegative(lastValue) && (number || decimal)) {
         addToDisplay(buttonString)
         //changes '6-*' tp '6*'
-    } else if (isNegative(lastValue) && operator) {
+    } else if (isNegative(lastValue) && secondToLastValue && operator) {
         display.value = display.value.replace(/.$/, buttonString)
     }
     //changes '5+-' to '5-'
@@ -80,6 +74,7 @@ function validateButtonsClicked(e, button) {
 
 function validateKeysPressed(e) {
     let lastValue = display.value[display.value.length - 1];
+    let secondToLastValue = display.value[display.value.length - 2];
 
     let key = e.key
     let number = /Digit/g.test(e.code);
@@ -94,7 +89,7 @@ function validateKeysPressed(e) {
     if (isNegative(lastValue) && (number || decimal)) {
         addToDisplay(key)
         //changes '6-*' tp '6*'
-    } else if (isNegative(lastValue) && operator) {
+    } else if (isNegative(lastValue) && secondToLastValue && operator) {
         display.value = display.value.replace(/.$/, key)
     }
     //changes '5+-' to '5-'
