@@ -2,26 +2,47 @@ let display = document.querySelector('.display');
 let buttons = document.querySelectorAll('button');
 let clearButton = document.getElementById('clear-btn');
 let deleteButton = document.getElementById('delete-btn');
-let equalsButton = document.getElementById('equals-btn')
+let equalsButton = document.getElementById('equals-btn');
 
-userClicksCalculatorButton()
+let keyboard = {
+    Escape: 'Esc',
+    Enter: 'Enter',
+    Backspace: 'Backspace'
+};
+
+userClicksCalculatorButton();
+calculatorKeyboardSupport();
 
 function userClicksCalculatorButton() {
     buttons.forEach((button) => {
         button.addEventListener('click', (e) => {
-
-            //delete and clear button functionality
-            if (button === deleteButton) { display.value = display.value.replace(/.$/, ''); }
-            if (button === clearButton) { display.value = ''; }
-
-            validateExpression(button, e);
-
-            if (button === equalsButton && convertDisplayToArr(display.value).length > 2) { calculateExpression(display) }
+            validateExpression(e, button);
+            if (button === deleteButton) { deleteLastValue() }
+            if (button === clearButton) { clearDisplay() }
+            if (button === equalsButton) { calculateExpression(display) }
         })
     })
 }
 
-function validateExpression(button, e) {
+function calculatorKeyboardSupport() {
+    display.addEventListener('keydown', (e) => {
+        e.preventDefault()
+        let key = e.code
+        validateExpression(e)
+        if (keyboard[key] === 'Esc') { clearDisplay() }
+        if (keyboard[key] === 'Backspace') { deleteLastValue() }
+        if (keyboard[key] === 'Enter') { calculateExpression(display) }
+    })
+}
+
+function validateExpression(e, button) {
+    let userClicksCalculator = e.type === 'click';
+    let userTypesCalculation = e.type === 'keydown';
+    if (userClicksCalculator) { validateButtonsClicked(e, button) }
+    if (userTypesCalculation) { validateKeysPressed(e) }
+}
+
+function validateButtonsClicked(e, button) {
     let lastValue = display.value[display.value.length - 1];
 
     let buttonString = e.target.textContent;
@@ -29,6 +50,7 @@ function validateExpression(button, e) {
     let decimal = button.classList.contains('decimal');
     let operator = button.classList.contains('operator');
     let negative = button.classList.value === 'negative operator';
+
 
     //if there's no display string and user clicks negative, number, or decimal button. addToDisplay
     if (lastValue === undefined && (negative || number || decimal)) { addToDisplay(buttonString) }
@@ -55,6 +77,41 @@ function validateExpression(button, e) {
     if (isDecimal(lastValue) && (number || operator)) { addToDisplay(buttonString) }
 }
 
+function validateKeysPressed(e) {
+    let lastValue = display.value[display.value.length - 1];
+
+    let key = e.key
+    let number = /Digit/g.test(e.code);
+    let decimal = key === '.';
+    let negative = key === '-'
+    let operator = isOperator(key);
+    // console.log(negative || key === number || decimal)
+
+    //if there's no display string and user clicks negative, number, or decimal button. addToDisplay
+    if (lastValue === undefined && (negative || number || decimal)) { addToDisplay(key) }
+
+    //'-' can add (4) or .
+    if (isNegative(lastValue) && (number || decimal)) {
+        addToDisplay(key)
+        //changes '6-*' tp '6*'
+    } else if (isNegative(lastValue) && operator) {
+        display.value = display.value.replace(/.$/, key)
+    }
+    //changes '5+-' to '5-'
+    if (isPositiveOperator(lastValue) && negative) {
+        display.value = display.value.replace(/.$/, "-");
+    } else if (isOperator(lastValue) && !isNegative(lastValue) && (number || decimal || negative)) {
+        addToDisplay(key)
+    }
+
+    //won't allow 1.1.1. Plus if '...3' can add ('1') or ('/')
+    if ((isNumber(lastValue) && decimal && !isDecimalInNumber(getLastNumber())) || (isNumber(lastValue) && (number || operator))) {
+        addToDisplay(key)
+    }
+
+    if (isDecimal(lastValue) && (number || operator)) { addToDisplay(key) }
+}
+
 function doesExpressionCalcByZero(display) {
     return /\/0/g.test(display.value)
 }
@@ -73,11 +130,16 @@ function calculateExpression(display) {
 //-11 doesn't work. If the beginning number is a negative number.
 function convertDisplayToArr(expressionStr) {
     //turns '11+2-.1*2/7' to ['11', '+', '2', '-', '.1', '*', '2', '/', '7']
-    return expressionStr.match(/[-\+\*\/]|\d*\.\d+|\d+|-\d+/g);
+    return expressionStr.match(/[-\+\*\/]|\d*\.\d+|\.|\d+|-\d+/g);
 }
 
 //6*-3 doesn't work.
 function calcUsingOrderOfOperations(expressionArr) {
+    console.log(expressionArr)
+    console.log(hasWrongFormat(expressionArr))
+    if (hasWrongFormat(expressionArr)) {
+        return 'Format Error.'
+    }
     let lastItemInExpression = expressionArr[expressionArr.length - 1];
     if (isOperator(lastItemInExpression)) {
         expressionArr.pop()
@@ -137,6 +199,18 @@ function getLastNumber() {
     return lastNumber
 }
 
+function clearDisplay() {
+    display.value = '';
+}
+
+function deleteLastValue() {
+    display.value = display.value.replace(/.$/, '')
+}
+
+function hasWrongFormat(expressionArr) {
+    return expressionArr.includes('.')
+}
+
 function isDecimalInNumber(lastNumber) {
     return /\./g.test(lastNumber)
 }
@@ -161,8 +235,8 @@ function isNegative(lastValue) {
     return /\-/.test(lastValue)
 }
 
-function addToDisplay(buttonString) {
-    return display.value += buttonString;
+function addToDisplay(stringValue) {
+    return display.value += stringValue;
 }
 
 function add(num1, num2) {
