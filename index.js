@@ -107,12 +107,7 @@ function validateKeysPressed(e) {
     if (isDecimal(lastValue) && (number || operator)) { addToDisplay(key) }
 }
 
-function doesExpressionCalcByZero(display) {
-    return /\/0/g.test(display.value)
-}
-
 function calculateExpression(display) {
-    if (doesExpressionCalcByZero(display)) { display.value = "Cannot divide by zero."; }
     let result;
     let expression = convertDisplayToArr(display.value);
     if (expression) {
@@ -130,8 +125,13 @@ function convertDisplayToArr(expressionStr) {
 
 //6*-3 doesn't work.
 function calcUsingOrderOfOperations(expressionArr) {
+    if (divideByZero(expressionArr)) {
+        turnErrorMessageRed()
+        return "Can't divide by 0"
+    }
     if (hasWrongFormat(expressionArr)) {
-        return 'Format Error.'
+        turnErrorMessageRed()
+        return 'Format Error'
     }
     let lastItemInExpression = expressionArr[expressionArr.length - 1];
     if (isOperator(lastItemInExpression)) {
@@ -193,11 +193,21 @@ function getLastNumber() {
 }
 
 function clearDisplay() {
+    display.classList.remove('red');
     display.value = '';
 }
 
 function deleteLastValue() {
     display.value = display.value.replace(/.$/, '')
+}
+
+//Error messages
+function turnErrorMessageRed() {
+    display.classList.add('red');
+}
+
+function divideByZero(expressionArr) {
+    return expressionArr.includes('0') && expressionArr[expressionArr.indexOf('0') - 1] === '/'
 }
 
 function hasWrongFormat(expressionArr) {

@@ -58,6 +58,10 @@ body {
     font-size: 200%;
 }
 
+.red {
+    color: red;
+}
+
 button {
     margin: 5px;
     font-size: 18px;
