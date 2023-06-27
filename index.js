@@ -85,10 +85,9 @@ function validateKeysPressed(e) {
     let decimal = key === '.';
     let negative = key === '-'
     let operator = isOperator(key);
-    // console.log(negative || key === number || decimal)
 
     //if there's no display string and user clicks negative, number, or decimal button. addToDisplay
-    if (lastValue === undefined && (negative || number || decimal)) { addToDisplay(key) }
+    if (lastValue === undefined && ((negative || decimal) || (number && e.shiftKey === false))) { addToDisplay(key) }
 
     //'-' can add (4) or .
     if (isNegative(lastValue) && (number || decimal)) {
@@ -135,8 +134,6 @@ function convertDisplayToArr(expressionStr) {
 
 //6*-3 doesn't work.
 function calcUsingOrderOfOperations(expressionArr) {
-    console.log(expressionArr)
-    console.log(hasWrongFormat(expressionArr))
     if (hasWrongFormat(expressionArr)) {
         return 'Format Error.'
     }
