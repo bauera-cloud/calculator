@@ -139,8 +139,10 @@ function calcUsingOrderOfOperations(expressionArr) {
         return 'Format Error'
     }
     let lastItemInExpression = expressionArr[expressionArr.length - 1];
-    if (isOperator(lastItemInExpression)) {
+    if (isOperator(lastItemInExpression) && expressionArr.length >= 3) {
         expressionArr.pop()
+    } else if (isOperator(lastItemInExpression)) {
+        return expressionArr.join('')
     }
     //while arr isn't [24] for example. Calculate.
     while (expressionArr.length > 1) {
@@ -175,7 +177,7 @@ function calcUsingOrderOfOperations(expressionArr) {
     if (isDecimalInNumber(expressionArr) && expressionArr.toString().length > 3) {
         return Number(expressionArr).toFixed(2).toString()
     } else {
-        return expressionArr.toString()
+        return expressionArr.join('')
     }
 }
 
