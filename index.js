@@ -28,10 +28,11 @@ function calculatorKeyboardSupport() {
     display.addEventListener('keydown', (e) => {
         e.preventDefault()
         let key = e.code
+        console.log(key)
         validateExpression(e)
-        if (keyboard[key] === 'Esc') { clearDisplay() }
-        if (keyboard[key] === 'Backspace') { deleteLastValue() }
-        if (keyboard[key] === 'Enter') { calculateExpression(display) }
+        if (key === 'Escape') { clearDisplay() }
+        if (key === 'Backspace') { deleteLastValue() }
+        if (key === 'Enter' || (key === 'Equal' && e.shiftKey === false)) { calculateExpression(display) }
     })
 }
 
