@@ -11,6 +11,9 @@ function userClicksCalculatorButton() {
     buttons.forEach((button) => {
         button.addEventListener('click', (e) => {
             validateExpression(e, button);
+            if (button === deleteButton && (display.value === 'Format Error' || display.value === "Can't divide by 0")) {
+                clearDisplay()
+            } else if (button === deleteButton) { deleteLastValue() }
             if (button === deleteButton) { deleteLastValue() }
             if (button === clearButton) { clearDisplay() }
             if (button === equalsButton) { calculateExpression(display) }
