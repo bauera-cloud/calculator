@@ -24,7 +24,9 @@ function calculatorKeyboardSupport() {
         let key = e.code
         validateExpression(e)
         if (key === 'Escape') { clearDisplay() }
-        if (key === 'Backspace') { deleteLastValue() }
+        if (key === 'Backspace' && (display.value === 'Format Error' || display.value === "Can't divide by 0")) {
+            clearDisplay()
+        } else if (key === 'Backspace') { deleteLastValue() }
         if (key === 'Enter' || (key === 'Equal' && e.shiftKey === false)) { calculateExpression(display) }
     })
 }
