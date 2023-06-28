@@ -91,7 +91,7 @@ function validateKeysPressed(e) {
     if (lastValue === undefined && ((negative || decimal) || (number && e.shiftKey === false))) { addToDisplay(key) }
 
     //'-' can add (4) or .
-    if (isNegative(lastValue) && (number || decimal)) {
+    if (isNegative(lastValue) && ((number && e.shiftKey === false) || decimal)) {
         addToDisplay(key)
         //changes '6-*' tp '6*'
     } else if (isNegative(lastValue) && secondToLastValue && operator) {
@@ -100,7 +100,8 @@ function validateKeysPressed(e) {
     //changes '5+-' to '5-'
     if (isPositiveOperator(lastValue) && negative) {
         display.value = display.value.replace(/.$/, "-");
-    } else if (isOperator(lastValue) && !isNegative(lastValue) && (number || decimal || negative)) {
+        // allows 6*3, 6*-, or 6*.
+    } else if (isOperator(lastValue) && !isNegative(lastValue) && ((number && e.shiftKey === false) || decimal || negative)) {
         addToDisplay(key)
     }
 
@@ -123,7 +124,7 @@ function calculateExpression(display) {
 
 
 function convertDisplayToArr(expressionStr) {
-    let expressionArr = expressionStr.match(/[-\+\*\/]|\d*\.\d+|\d+/g);
+    let expressionArr = expressionStr.match(/[-\+\*\/]|\d*\.\d*|\d+/g);
     //match() turns '11+2-.1*2/7' to ['11', '+', '2', '-', '.1', '*', '2', '/', '7']
     expressionArr.forEach((item, i) => {
         if (isNumber(item) && isNegative(expressionArr[i - 1]) && isOperator(expressionArr[i - 2])) {
