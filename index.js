@@ -122,10 +122,21 @@ function calculateExpression(display) {
 }
 
 
-//-11 doesn't work. If the beginning number is a negative number.
 function convertDisplayToArr(expressionStr) {
-    //turns '11+2-.1*2/7' to ['11', '+', '2', '-', '.1', '*', '2', '/', '7']
-    return expressionStr.match(/[-\+\*\/]|\d*\.\d+|\.|\d+|-\d+/g);
+    let expressionArr = expressionStr.match(/[-\+\*\/]|\d*\.\d+|\d+/g);
+    //match() turns '11+2-.1*2/7' to ['11', '+', '2', '-', '.1', '*', '2', '/', '7']
+    expressionArr.forEach((item, i) => {
+        if (isNumber(item) && isNegative(expressionArr[i - 1]) && isOperator(expressionArr[i - 2])) {
+            expressionArr[i] = '-' + item;
+            expressionArr.splice(i - 1, 1);
+        } else if (isNumber(item) && isNegative(expressionArr[i - 1]) && expressionArr[i - 2] === undefined) {
+            expressionArr[i] = '-' + item;
+            expressionArr.splice(i - 1, 1);
+        }
+    })
+    //temporary fix for '-' operators. Identifies negative numbers. Ideally will change regex.
+    //fixes '-6*-3-7' to be ['-6', '*', '-3', '-', '7']
+    return expressionArr
 }
 
 //6*-3 doesn't work.
@@ -226,11 +237,11 @@ function isDecimalInNumber(lastNumber) {
 }
 
 function isOperator(lastValue) {
-    return new RegExp('[\*\+/-]').test(lastValue)
+    return new RegExp('[\*\+/-]$').test(lastValue)
 }
 
 function isNumber(lastValue) {
-    return /[\d]/.test(lastValue)
+    return /\d/.test(lastValue)
 }
 
 function isDecimal(lastValue) {
