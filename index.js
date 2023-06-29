@@ -14,7 +14,6 @@ function userClicksCalculatorButton() {
             if (button === deleteButton && (display.value === 'Format Error' || display.value === "Can't divide by 0")) {
                 clearDisplay()
             } else if (button === deleteButton) { deleteLastValue() }
-            if (button === deleteButton) { deleteLastValue() }
             if (button === clearButton) { clearDisplay() }
             if (button === equalsButton) { calculateExpression(display) }
         })
@@ -27,7 +26,7 @@ function calculatorKeyboardSupport() {
         let key = e.code
         validateExpression(e)
         if (key === 'Escape') { clearDisplay() }
-        if (key === 'Backspace' && (display.value === 'Format Error' || display.value === "Can't divide by 0")) {
+        if (key === 'Backspace' && /[A-Za-z]/g.test(display.value)) {
             clearDisplay()
         } else if (key === 'Backspace') { deleteLastValue() }
         if (key === 'Enter' || (key === 'Equal' && e.shiftKey === false)) { calculateExpression(display) }
